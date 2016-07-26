@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html >
+<!-- saved from url=(0071)http://www.zhangxinxu.com/study/201001/css3-animate-3d-effect-demo.html -->
+<html >
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1.0, maximum-scale=1, user-scalable=no,minimal-ui">
+<title>CSS3 实现的3D动画效果</title>
+<style type="text/css">
+*{margin:0;padding:0;}
+#div1{
+	position:relative;
+	max-width:640px;
+	max-height:640px;
+	margin:0 auto;
+}
+#div1 div{
+	position:absolute;
+	background:url("bg1.png")no-repeat;
+	box-sizing:border-box;
+	
+
+	
+}
+#div1 div{
+	background:url("bg1.png")no-repeat;
+	-webkit-animation-duration:2s; 
+	-webkit-animation-timing-function:linear;
+}
+<!--
+@-webkit-keyframes y-spin {
+	0%    { -webkit-transform:rotateY(-180deg);  background-position: -200px -200px; margin:0;padding:0;}
+	100%  { -webkit-transform:rotateY(0deg); background:green; background-position: -200px -200px; margin:0;padding:0;}
+}-->
+
+</style>
+</head>
+	<body >
+		<div id="div1"></div>
+	</body>
+	<script>
+		var count=7;
+		var divArray=[];
+		
+		var div1=document.getElementById("div1");
+		div1.style["width"]=window.innerWidth+"px";
+		div1.style["height"]=window.innerHeight+"px";
+		var div1Width=parseInt(getComputedStyle(div1)["width"]);
+		var div1Height=parseInt(getComputedStyle(div1)["height"]);
+		var littleWidth=div1Width/count;
+		var littleHeight=div1Height/count;
+		
+		for(var i=0;i<count;i++)//行
+		{
+			var litArr=[];
+			for(var j=0;j<count;j++)//列
+			{
+				var div=document.createElement("div");
+				var id="div"+i+j;
+				div.id=id;
+				div.style.width=div1Width/count+"px";
+				div.style.height=div1Height/count+"px";
+				var mleft=j*littleWidth+"px";
+				var mtop=i*littleHeight+"px";
+				div.style.left=mleft;
+				div.style.top=mtop;
+				var p="-"+mleft+" -"+mtop;
+				div.style["background-position"]=p;
+				
+				div.value=[i,j];
+				//div.style["line-height"]=littleHeight+"px";
+				//div.innerHTML=i+","+j;
+				div1.appendChild(div);
+				var sty=document.createElement("style");
+				sty.innerHTML="@-webkit-keyframes "+id+" { 0%  { -webkit-transform:rotateY(0deg); background:url(\'bg1.png\'); background-position:"+p+"; margin:0;padding:0;}"+
+								"50%  { -webkit-transform:rotateY(-90deg); background:url(\'bg2.png\'); background-position:"+p+"; margin:0;padding:0;}"+
+								" 100%  { -webkit-transform:rotateY(0deg); background:url(\'bg2.png\'); background-position:"+p+"; margin:0;padding:0;}}";
+				
+				div1.appendChild(sty);
+				litArr.push(div);
+			}
+			divArray.push(litArr);
+		}
+		div1.addEventListener("touchstart",function(e){
+			var eleArr=[];
+			eleArr.push(e.target);
+			step(eleArr,1);
+		},false);
+	
+		function step(eleArr,num)
+		{	
+			console.log(num);
+			var eArr=[];
+			for(var i=0;i<eleArr.length;i++)
+			{
+				setStyle(eleArr[i]);
+				//window.setTimeout(function(){},200*num)
+				var ij=eleArr[i].value;
+				if(ij[0]>0)
+				{
+					var e1=divArray[ij[0]-1][ij[1]];
+					if(!e1.rota)
+					{
+						eArr.push(e1);
+					}
+				}
+				if(ij[0]<count-1)
+				{
+					var e2=divArray[ij[0]+1][ij[1]];
+					if(!e2.rota)
+					{
+						eArr.push(e2);
+					}
+				}
+				if(ij[1]>0)
+				{
+					var e3=divArray[ij[0]][ij[1]-1];
+					if(!e3.rota)
+					{
+						eArr.push(e3);
+					}
+				}
+				if(ij[1]<count-1)
+				{
+					var e4=divArray[ij[0]][ij[1]+1];
+					if(!e4.rota)
+					{
+						eArr.push(e4);
+					}
+				}
+			}
+			num++;
+			/*if(eArr.length)
+			step(eArr,num)*/
+			if(eArr.length)
+			(function(eArr,num){window.setTimeout(function(){step(eArr,num);},200);})(eArr,num);	
+		}
+		function setStyle(ele)
+		{
+			ele.style["-webkit-animation-name"]="";
+			ele.style["-webkit-animation-name"]=ele.id; 
+			ele.style["background"]="url('bg2.png')no-repeat";
+			ele.style["background-position"]="-"+ele.style.left+" -"+ele.style.top;
+			ele.rota=1;
+		}
+				/*var div=document.createElement("div");
+				div.style.width="200px";
+				div.style.height="200px";
+				var mleft="0px";
+				var mtop="0px";
+				div.style.left="200px";
+				div.style.top="200px";
+				var p="-"+mleft+" -"+mtop;
+				div.style["background-position"]="-200px -200px";
+				
+			
+				
+				div1.appendChild(div);*/
+	</script>
+</html>

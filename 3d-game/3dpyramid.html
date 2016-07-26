@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1.0, maximum-scale=1, user-scalable=no,minimal-ui">
+<title>三面金字塔</title>
+</head>
+<style>
+html,body,div,span,ul,li,ol,p,a{margin:0;padding:0;}
+
+
+#container{margin:0 auto;width:100%; height:100%;margin:0 auto;border:1px #000 solid; background:#99F;position:relative;}
+#main{-webkit-transform-style:preserve-3d;-webkit-transform-origin:center center;-webkit-transform:rotateX(00deg) rotateY(-30deg) rotateZ(00deg);width:100px;height:100px;margin:100px auto;}
+
+#main div:nth-child(1){position:absolute;-webkit-transform-origin:bottom;-webkit-transform:rotateX(90deg);width:100px;height:86.6px;background:url("1.png");background-repeat: round;}
+#main div:nth-child(2){position:absolute;-webkit-transform-origin:bottom;-webkit-transform:rotateX(30deg);width:100px;height:86.6px;background:url("2.png");background-repeat: round;}
+#main div:nth-child(3){position:absolute;-webkit-transform-origin:right bottom;-webkit-transform: rotateX(-30deg) rotateY(-90deg);width:100px;height:86.6px;background:url("3.png");background-repeat: round;}
+#main div:nth-child(4){position:absolute;-webkit-transform-origin:bottom;-webkit-transform:rotateX(30deg);width:100px;height:86.6px;background:url("4.png");background-repeat: round;}
+
+input[type=number]{
+	width:60px;height:30px;line-height:30px;margin:5px;
+}
+a{display:inline-block;width:60px;height:40px;line-height:40px;margin:5px 0;text-align:center;color:;background:#EDE0E0;border:1px solid gray;border-radius: 10px;font-size:0.8em;}
+
+.diva{	
+	  display:block;
+	  width: 100%;
+	  text-align: right;
+	  text-decoration: none;
+	  font-size: 11px;
+	  color: #5FC3D5;
+	  font-weight: bold;
+	  text-align:right;
+}
+i{
+	  display:block;
+	  width: 100%;
+	  text-align: right;
+	  text-decoration: none;
+	  font-size: 11px;
+	  color: #666;
+	  font-weight: bold;
+	  text-align:right;
+}
+</style>
+<body>
+<div id="container">
+	<div id="main">
+		<div id="black"></div>
+		<div id="red"></div>
+		<div id="yellow"></div>
+		<div id="div4"></div>
+	</div>
+	
+	<a >rotateX</a>
+	<a  >rotateY</a>
+	<a >rotateZ</a>
+	<a style="" >reload</a>
+	
+	<span id="sec_black">
+		<input type="number"  value="90"/><input type="number"   value="0"/><input type="number"  value="0"/>
+		<a >btnblack</a>
+	</span>
+	
+	<section id="sec_red">
+		<input type="number"  value="30"/><input type="number"  value="0"/><input type="number"  value="0"/>
+		<a  >btnred</a>
+	</section>
+	
+	<section id="sec_yellow">
+		<input type="number"  value="-30"/><input type="number"  value="-90"/><input type="number"  value="0"/>
+		<a  >btnyellow</a>
+	</section>
+	<div id="demo" class="diva"  >DEMO&nbsp;&nbsp;&nbsp;&nbsp;</div>
+	<i>拼好三面再索要第四面。</i>
+	
+	
+</div>
+</body>
+	<script>
+		var con=document.getElementById("container");
+		var main=document.getElementById("main");
+		var mainRotate={X:0,Y:-30,Z:0};
+		var timer=null;
+		con.addEventListener("touchstart",function(e){
+					var html=e.target.innerHTML;
+					if(e.target.nodeName.toUpperCase()=="A" && /^rotate/.test(html) ){
+						step(html.substr(html.length-1,1));
+                        e.stopPropagation();
+                    	e.preventDefault();
+					}
+					else if( e.target.nodeName.toUpperCase()=="A" && html=="reload")
+					{
+						mainRotate={X:0,Y:0,Z:0};
+						main.style["-webkit-transform"]="rotateX(0deg) rotateY(0deg) rotateZ(0deg)";
+						document.getElementById("black").style["-webkit-transform"]="rotateX(90deg)";
+						document.getElementById("red").style["-webkit-transform"]="rotateX(30deg)";
+						document.getElementById("yellow").style["-webkit-transform"]="  rotateX(-30deg) rotateY(-90deg)";
+                        e.stopPropagation();
+                    	e.preventDefault();
+					}
+					else if(e.target.nodeName.toUpperCase()=="A" && /btn/.test(html))
+					{
+						e.stopPropagation();
+                    	e.preventDefault();
+						setEleRoute(html.substr(3));
+					}				
+
+					
+			});
+		document.getElementById("demo").addEventListener("touchstart",function(){location.href="http://1.devtest2.sinaapp.com/3dbox.html";});
+		con.addEventListener("touchend",function(e){
+					window.clearTimeout(timer);
+		},false);
+		
+		var n=0;
+		function setEleRoute(id)
+		{
+			var inputs=document.getElementById("sec_"+id).getElementsByTagName("input");
+			var x=inputs[0].value==undefined?mainRotate.X:inputs[0].value;
+			var y=inputs[1].value==undefined?mainRotate.Y:inputs[1].value;
+			var z=inputs[2].value==undefined?mainRotate.Z:inputs[2].value;
+			var rotate=" rotateX("+x+"deg) rotateY("+y+"deg) rotateZ("+z+"deg)";
+			document.getElementById(id).style["-webkit-transform"]=rotate;
+		}
+		function step(dri)
+		{
+			mainRotate[dri]=(mainRotate[dri])+1;
+			main.style["-webkit-transform"]="rotateX("+mainRotate.X+"deg) rotateY("+mainRotate.Y+"deg) rotateZ("+mainRotate.Z+"deg)";
+			timer=window.setTimeout((function(d){ return function (){step(d);}})(dri),50);
+		}
+        
+	</script>
+</html>

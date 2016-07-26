@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>导航</title>
+		<script  src="zepto-docs.min.js"></script>
+    <style>
+		body{
+			margin:0;
+			height:100%;
+			width:100%;
+			position:absolute;
+		}
+		.contant{
+			width: 480px;
+			height: 100%;
+			position: absolute;
+			top:0;
+			left: 0px;
+			
+		}
+		.contant div{
+			position:relative;
+			margin-left: 10px;
+			transform:rotateZ(0deg);
+			width:80px;
+			height:120px;
+
+			background:url("1.png");
+			background-repeat: round;
+			float: left;
+		}
+		.contant .div1{
+			margin-left: 00px;
+			transform-origin:bottom left;
+			transform:rotateZ(0deg);
+		}
+		.contant .div2{
+			transform-origin:bottom center;
+		    margin-left: 10px;
+			transform:rotateZ(20deg);
+		}
+		.contant .div3{
+			transform-origin:bottom center;
+			margin-top: 45px;
+			transform:rotateZ(60deg);
+		}
+		.contant .div4{
+			transform-origin:bottom center;
+			transform:rotateZ(30deg);
+		}
+		.contant .div5{
+			transform-origin:bottom center;
+			transform:rotateZ(60deg);
+			
+			margin-left: 0px;
+		}
+		
+    </style>
+</head>
+<body>
+	<div class="contant">
+		<div class="div1 swipeDiv" data-index=0></div>
+		<div class="div2 swipeDiv" data-index=1></div>
+		<div class="div3 swipeDiv" data-index=2></div>
+		<div class="div4 swipeDiv" data-index=3></div>
+		<div class="div5 swipeDiv" data-index=4></div>	
+	</div>
+	
+</body>
+	<script>
+	var $swipeDivArr=$(".swipeDiv");
+		$swipeDivArr.swipeUp(function(e,i){
+			e.stopPropagation();
+			var target=e.target;
+
+			var index=+$(this).attr("data-index");
+			console.log(index);
+
+
+		});
+		$swipeDivArr.swipeDown(function(e,i){
+			e.stopPropagation();
+			console.log(e);
+		});
+	</script>
+</html>
